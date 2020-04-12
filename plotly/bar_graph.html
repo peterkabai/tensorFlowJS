@@ -1,0 +1,55 @@
+<html>
+    <!-- https://plot.ly/javascript/bar-charts/ -->
+    <head>
+        <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+    </head>
+    <body>
+        <div id="myDiv" style="width:900; height:500;" \>
+        <script>
+            function make_benchmark(value) {
+                return {
+                    type: 'line',
+                    x0: -0.5,
+                    y0: value,
+                    x1: x.length - 0.5,
+                    y1: value,
+                    line: {
+                        color: 'rgb(0, 0, 0)',
+                        width: 1,
+                        // line style: 'solid', 'dot', or 'dashdot'
+                        dash: 'solid'
+                    }
+                }
+            }
+
+            var colors = ['rgb(48, 133, 186)','rgb(92, 192, 255)']
+            var x = ["Alpha", "Beta", "Gamma", "Delta"]
+
+            var bar_1 = {
+                x: x,
+                y: [1, 4, 9, 16],
+                name: "Group One",
+                type: 'bar',
+                marker: { color: colors[0] }
+            };
+            var bar_2 = {
+                x: x,
+                y: [2, -5, 10, 15],
+                name: "Group Two",
+                type: 'bar',
+                marker: { color: colors[1] }
+            };
+            
+            var data = [ bar_1, bar_2 ];
+            var layout = {
+                // barmode: 'stack' or 'group'
+                barmode: 'group',
+                shapes: [
+                    make_benchmark(10)
+                ]
+            };
+            
+            Plotly.newPlot('myDiv', data, layout);
+        </script>
+    </body>
+</html>

@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+
+<body>
+  <!-- loads tensorflow and bootstrap -->
+  <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@1.0.1"> </script>
+  <script src="https://cdn.jsdelivr.net/npm/@tensorflow-models/mobilenet@1.0.0"> </script>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+
+  <!-- cleaner look -->
+  <style>
+    body { 
+      margin: 10px;
+    }
+    table tr td {
+      border: 1px solid lightgray;
+      padding: 10px;
+    }
+  </style>
+
+  <!-- input form -->
+  <form id='form'>
+    <h5>Enter Image URL</h5>
+    <input id="field" style="width: 400px;" type="text">
+    <button onclick="submit_button()" type="button">Classify</button>
+  </form>
+
+  <!-- image to classify -->
+  <br>
+  <img src="local_images/dog.jpg" crossorigin="anonymous" id="img" onload="classify()" width="500"></img>
+  <br>
+  <br>
+  <table id='results'></table>
+
+  <script>
+
+    // change the image on the page
+    function submit_button() {
+      const url = document.getElementById('field').value
+      document.getElementById('img').src = url
+    }
+
+    // run the tensorflow model 
+    function classify() {
+      const img = document.getElementById('img');
+      mobilenet.load().then(model => {
+        model.classify(img).then(predictions => {
+
+          // put predictions into the table
+          const results = document.getElementById('results')
+          results.innerHTML = ""
+
+          for (prediction in predictions) {
+            var tr = document.createElement("tr")
+
+            const percent = (predictions[prediction].probability*100).toFixed(0) + "%"
+            const classification = predictions[prediction].className
+
+            var td = document.createElement("td")
+            td.appendChild(document.createTextNode(percent))
+            tr.appendChild(td)
+
+            var td = document.createElement("td")
+            td.appendChild(document.createTextNode(classification))
+            tr.appendChild(td)
+
+            results.appendChild(tr)
+          }
+        });
+      });
+    }
+  </script>
+
+</body>
+
+</html>

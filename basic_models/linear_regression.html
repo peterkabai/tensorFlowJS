@@ -1,0 +1,52 @@
+
+<html>
+    <head>
+        <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@1.0.0/dist/tf.min.js"></script>
+        <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+    </head>
+    <body>
+        <div id="graph"></div>
+        <script>
+            
+            // https://medium.com/@tristansokol/basic-tutorial-with-tensorflow-js-linear-regression-aa68b16e5b8e
+            const trainX = [3.3, 4.4, 5.5, 6.71, 6.93, 4.168, 9.779, 6.182, 7.59, 2.167, 7.042, 10.791, 5.313, 7.997, 5.654, 9.27, 3.1];
+            const trainY = [1.7, 2.76, 2.09, 3.19, 1.694, 1.573, 3.366, 2.596, 2.53, 1.221, 2.827, 3.465, 1.65, 2.904, 2.42, 2.94, 1.3];
+            const m = tf.variable(tf.scalar(Math.random()));
+            const b = tf.variable(tf.scalar(Math.random()));
+        
+            var points = {
+                x: trainX,
+                y: trainY,
+                mode: 'markers',
+                type: 'scatter'
+            };
+
+            console.log(m)
+            var line = {
+                x: [ 
+                    m.dataSync()[0]*0+b.dataSync()[0], 
+                    m.dataSync()[0]*10+b.dataSync()[0]
+                ],
+                y: [
+                    m.dataSync()[0]*0+b.dataSync()[0], 
+                    m.dataSync()[0]*10+b.dataSync()[0]
+                ],
+                mode: 'line'
+            }; 
+            var data = [ points, line ];
+            Plotly.newPlot('graph', data);
+
+            function predict(x) { 
+                return tf.tidy(function() {
+                    return m.mul(x).add(b);
+                });
+            }
+
+            function loss(prediction, actualValues) { 
+                const error = prediction.sub(actualValues).square().mean(); 
+                return error; 
+            }
+
+        </script>
+    </body>
+</html>
