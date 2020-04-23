@@ -1,10 +1,7 @@
 import React from 'react';
-import { action } from '@storybook/addon-actions';
-import { Button } from '@storybook/react/demo';
 
 // this would be a lot faster with @tensorflow/tfjs-node
 import * as tf from '@tensorflow/tfjs';
-
 
 export default {
   title: 'Basics'
